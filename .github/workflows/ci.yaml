@@ -6,7 +6,7 @@ on:
       - main
 jobs:
   build:
-    uses: araminian/Sample-Remote-Justfile-App/.github/workflows/build.yml@main
+    uses: araminian/Sample-Remote-Justfile-App/.github/workflows/build.yaml@main
  
 
 
