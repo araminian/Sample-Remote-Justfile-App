@@ -1,0 +1,16 @@
+---
+apiVersion: skaffold/v3
+kind: Config
+metadata:
+  name: dummy
+build:
+  platforms:
+    - "linux/amd64"
+  local:
+    useBuildkit: true
+    push: false
+  artifacts:
+    - image: rminz/dummynginx
+      context: .
+      docker:
+        dockerfile: Dockerfile

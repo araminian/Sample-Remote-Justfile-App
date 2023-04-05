@@ -1,0 +1,42 @@
+on:
+  workflow_call:
+    inputs:
+      remote_just:
+        required: false
+        type: boolean
+        default: true
+      working-directory:
+        required: false
+        type: string
+        default: .
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set Up Kubernetes Tools
+        uses: yokawasa/action-setup-kube-tools@v0.8.3
+        with:
+          skaffold: "2.0.1"
+          helm: "3.10.0"
+      - name: Setup just
+        uses: extractions/setup-just@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: load just file
+        if: ${{ inputs.remote_just == true }}
+        working-directory: ${{ inputs.working-directory }}
+        run: |-
+          curl -s https://raw.githubusercontent.com/araminian/BRApplication/main/justfile > justfile
+
+      - name: Build
+        working-directory: ${{ inputs.working-directory }}
+        env:
+          REMOTE_JUST: ${{ inputs.remote_just }}
+        run: |-
+          if [ "$REMOTE_JUST" = "true" ]; then
+            just build
+          else
+            just --justfile ${{ inputs.working-directory }}/justfile build
+          fi

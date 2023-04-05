@@ -1,0 +1,12 @@
+---
+name: ci
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    uses: araminian/Sample-Remote-Justfile-App/.github/workflows/build.yml@main
+ 
+
+
